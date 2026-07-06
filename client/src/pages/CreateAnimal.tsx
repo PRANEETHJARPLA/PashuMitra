@@ -1,9 +1,11 @@
 ﻿import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function CreateAnimal() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -16,8 +18,6 @@ function CreateAnimal() {
     price: '',
     description: '',
     location: '',
-    sellerName: '',
-    sellerContact: '',
   });
 
   const handleChange = (
@@ -41,12 +41,26 @@ function CreateAnimal() {
 
       const response = await api.post('/animals', payload);
       navigate(`/animals/${response.data._id}`);
-    } catch (err) {
-      setError('Failed to create listing. Please check the fields and try again.');
-      console.error(err);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to create listing. Please try again.');
       setSubmitting(false);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-green-50 p-8">
+        <p className="text-gray-700 mb-4">You need to be logged in to create a listing.</p>
+        <Link to="/login" className="text-green-700 underline">
+          Log in
+        </Link>
+        {' or '}
+        <Link to="/signup" className="text-green-700 underline">
+          Sign up
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-green-50 p-8">
@@ -163,32 +177,6 @@ function CreateAnimal() {
             required
             className="w-full border rounded px-3 py-2"
           />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block font-semibold text-gray-700 mb-1">Your Name</label>
-            <input
-              type="text"
-              name="sellerName"
-              value={form.sellerName}
-              onChange={handleChange}
-              required
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-
-          <div>
-            <label className="block font-semibold text-gray-700 mb-1">Contact Number</label>
-            <input
-              type="text"
-              name="sellerContact"
-              value={form.sellerContact}
-              onChange={handleChange}
-              required
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
         </div>
 
         <button

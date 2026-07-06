@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const animalRoutes = require('./routes/animalRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/animals', animalRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 

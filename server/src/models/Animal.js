@@ -12,7 +12,7 @@ const animalSchema = new mongoose.Schema(
       required: true,
     },
     age: {
-      type: Number, // age in months
+      type: Number,
       required: true,
     },
     gender: {
@@ -21,7 +21,7 @@ const animalSchema = new mongoose.Schema(
       required: true,
     },
     weight: {
-      type: Number, // in kg
+      type: Number,
     },
     price: {
       type: Number,
@@ -35,6 +35,11 @@ const animalSchema = new mongoose.Schema(
     },
     location: {
       type: String,
+      required: true,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     sellerName: {

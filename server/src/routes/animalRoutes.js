@@ -1,5 +1,6 @@
 ﻿const express = require('express');
 const router = express.Router();
+const protect = require('../middleware/protect');
 const {
   createAnimal,
   getAnimals,
@@ -8,10 +9,10 @@ const {
   deleteAnimal,
 } = require('../controllers/animalController');
 
-router.post('/', createAnimal);
+router.post('/', protect, createAnimal);
 router.get('/', getAnimals);
 router.get('/:id', getAnimalById);
-router.put('/:id', updateAnimal);
-router.delete('/:id', deleteAnimal);
+router.put('/:id', protect, updateAnimal);
+router.delete('/:id', protect, deleteAnimal);
 
 module.exports = router;
