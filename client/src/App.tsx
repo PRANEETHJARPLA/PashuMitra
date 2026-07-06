@@ -5,6 +5,8 @@ import AnimalDetail from './pages/AnimalDetail';
 import CreateAnimal from './pages/CreateAnimal';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import MyListings from './pages/MyListings';
+import EditAnimal from './pages/EditAnimal';
 
 function Nav() {
   const { user, logout } = useAuth();
@@ -14,6 +16,9 @@ function Nav() {
       <Link to="/" className="font-bold text-lg">PashuMitra</Link>
       <Link to="/animals" className="hover:underline">Browse</Link>
       <Link to="/create" className="hover:underline">Sell an Animal</Link>
+      {user && (
+        <Link to="/my-listings" className="hover:underline">My Listings</Link>
+      )}
 
       <div className="ml-auto flex gap-4 items-center">
         {user ? (
@@ -46,6 +51,8 @@ function App() {
           <Route path="/create" element={<CreateAnimal />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/my-listings" element={<MyListings />} />
+          <Route path="/edit/:id" element={<EditAnimal />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

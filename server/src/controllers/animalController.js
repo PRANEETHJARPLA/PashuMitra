@@ -36,6 +36,15 @@ exports.getAnimals = async (req, res) => {
   }
 };
 
+exports.getMyAnimals = async (req, res) => {
+  try {
+    const animals = await Animal.find({ owner: req.user._id }).sort({ createdAt: -1 });
+    res.json(animals);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getAnimalById = async (req, res) => {
   try {
     const animal = await Animal.findById(req.params.id);
