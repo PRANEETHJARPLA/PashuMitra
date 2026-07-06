@@ -9,6 +9,10 @@ exports.createAnimal = async (req, res) => {
       sellerContact: req.user.phone || 'Not provided',
     };
 
+    if (req.file) {
+      animalData.photoUrl = req.file.path;
+    }
+
     const animal = await Animal.create(animalData);
     res.status(201).json(animal);
   } catch (error) {
@@ -64,7 +68,12 @@ exports.updateAnimal = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to edit this listing' });
     }
 
-    const updated = await Animal.findByIdAndUpdate(req.params.id, req.body, {
+    const updateData = { ...req.body };
+    if (req.file) {
+      updateData.photoUrl = req.file.path;
+    }
+
+    const updated = await Animal.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true,
     });

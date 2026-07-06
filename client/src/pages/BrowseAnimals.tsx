@@ -149,16 +149,29 @@ function BrowseAnimals() {
             <Link
               to={`/animals/${animal._id}`}
               key={animal._id}
-              className="bg-white rounded-lg shadow p-4 hover:shadow-md transition"
+              className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition"
             >
-              <h2 className="text-xl font-semibold text-green-800">
-                {animal.breed} ({animal.category})
-              </h2>
-              <p className="text-gray-600">Age: {animal.age} months</p>
-              <p className="text-gray-600">Location: {animal.location}</p>
-              <p className="text-lg font-bold text-green-700 mt-2">
-                ₹{animal.price.toLocaleString()}
-              </p>
+              <div className="h-40 bg-gray-100 flex items-center justify-center">
+                {animal.photoUrl ? (
+                  <img
+                    src={animal.photoUrl}
+                    alt={animal.breed}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-sm">No photo</span>
+                )}
+              </div>
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-green-800">
+                  {animal.breed} ({animal.category})
+                </h2>
+                <p className="text-gray-600">Age: {animal.age} months</p>
+                <p className="text-gray-600">Location: {animal.location}</p>
+                <p className="text-lg font-bold text-green-700 mt-2">
+                  ₹{animal.price.toLocaleString()}
+                </p>
+              </div>
             </Link>
           ))}
         </div>

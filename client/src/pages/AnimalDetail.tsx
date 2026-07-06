@@ -49,6 +49,18 @@ function AnimalDetail() {
       </Link>
 
       <div className="bg-white rounded-lg shadow p-6 max-w-2xl">
+        {animal.photoUrl ? (
+          <img
+            src={animal.photoUrl}
+            alt={animal.breed}
+            className="w-full h-64 object-cover rounded mb-4"
+          />
+        ) : (
+          <div className="w-full h-64 bg-gray-100 flex items-center justify-center rounded mb-4">
+            <span className="text-gray-400">No photo available</span>
+          </div>
+        )}
+
         <h1 className="text-3xl font-bold text-green-800 mb-2">
           {animal.breed} ({animal.category})
         </h1>
