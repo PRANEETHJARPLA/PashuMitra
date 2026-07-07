@@ -7,15 +7,17 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import MyListings from './pages/MyListings';
 import EditAnimal from './pages/EditAnimal';
+import SchemeFinder from './pages/SchemeFinder';
 
 function Nav() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-green-800 text-white px-6 py-4 flex gap-6 items-center">
+    <nav className="bg-green-800 text-white px-6 py-4 flex gap-6 items-center flex-wrap">
       <Link to="/" className="font-bold text-lg">PashuMitra</Link>
       <Link to="/animals" className="hover:underline">Browse</Link>
       <Link to="/create" className="hover:underline">Sell an Animal</Link>
+      <Link to="/schemes" className="hover:underline">Govt Schemes</Link>
       {user && (
         <Link to="/my-listings" className="hover:underline">My Listings</Link>
       )}
@@ -53,6 +55,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/my-listings" element={<MyListings />} />
           <Route path="/edit/:id" element={<EditAnimal />} />
+          <Route path="/schemes" element={<SchemeFinder />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

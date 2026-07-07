@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const animalRoutes = require('./routes/animalRoutes');
 const authRoutes = require('./routes/authRoutes');
+const schemeRoutes = require('./routes/schemeRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/animals', animalRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/schemes', schemeRoutes);
 
 const PORT = process.env.PORT || 5000;
 
