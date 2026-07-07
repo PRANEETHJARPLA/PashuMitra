@@ -8,6 +8,9 @@ function EditAnimal() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [existingPhotoUrl, setExistingPhotoUrl] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     category: 'Cow',
@@ -37,6 +40,7 @@ function EditAnimal() {
           location: a.location,
           status: a.status,
         });
+        setExistingPhotoUrl(a.photoUrl || null);
         setLoading(false);
       })
       .catch((err) => {
@@ -52,20 +56,33 @@ function EditAnimal() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setPhoto(file);
+    setPreview(file ? URL.createObjectURL(file) : null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSubmitting(true);
 
     try {
-      const payload = {
-        ...form,
-        age: Number(form.age),
-        price: Number(form.price),
-        weight: form.weight ? Number(form.weight) : undefined,
-      };
+      const formData = new FormData();
+      formData.append('category', form.category);
+      formData.append('breed', form.breed);
+      formData.append('age', form.age);
+      formData.append('gender', form.gender);
+      formData.append('price', form.price);
+      formData.append('location', form.location);
+      formData.append('status', form.status);
+      if (form.weight) formData.append('weight', form.weight);
+      if (form.description) formData.append('description', form.description);
+      if (photo) formData.append('photo', photo);
 
-      await api.put(`/animals/${id}`, payload);
+      await api.put(`/animals/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       navigate(`/animals/${id}`);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to update listing.');
@@ -101,6 +118,38 @@ function EditAnimal() {
         className="bg-white rounded-lg shadow p-6 max-w-xl space-y-4"
       >
         {error && <p className="text-red-600">{error}</p>}
+
+        <div>
+          <label className="block font-semibold text-gray-700 mb-1">Photo</label>
+
+          {preview ? (
+            <img
+              src={preview}
+              alt="New preview"
+              className="mb-2 h-40 w-40 object-cover rounded"
+            />
+          ) : existingPhotoUrl ? (
+            <img
+              src={existingPhotoUrl}
+              alt="Current"
+              className="mb-2 h-40 w-40 object-cover rounded"
+            />
+          ) : (
+            <div className="mb-2 h-40 w-40 bg-gray-100 flex items-center justify-center rounded">
+              <span className="text-gray-400 text-sm">No photo</span>
+            </div>
+          )}
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoChange}
+            className="w-full border rounded px-3 py-2"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Leave empty to keep the current photo.
+          </p>
+        </div>
 
         <div>
           <label className="block font-semibold text-gray-700 mb-1">Category</label>
