@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import MyListings from './pages/MyListings';
 import EditAnimal from './pages/EditAnimal';
 import SchemeFinder from './pages/SchemeFinder';
+import MarketPrices from './pages/MarketPrices';
 
 function Nav() {
   const { user, logout } = useAuth();
@@ -18,6 +19,7 @@ function Nav() {
       <Link to="/animals" className="hover:underline">Browse</Link>
       <Link to="/create" className="hover:underline">Sell an Animal</Link>
       <Link to="/schemes" className="hover:underline">Govt Schemes</Link>
+      <Link to="/market-prices" className="hover:underline">Feed Prices</Link>
       {user && (
         <Link to="/my-listings" className="hover:underline">My Listings</Link>
       )}
@@ -56,6 +58,7 @@ function App() {
           <Route path="/my-listings" element={<MyListings />} />
           <Route path="/edit/:id" element={<EditAnimal />} />
           <Route path="/schemes" element={<SchemeFinder />} />
+          <Route path="/market-prices" element={<MarketPrices />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

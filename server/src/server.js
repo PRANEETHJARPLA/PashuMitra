@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const animalRoutes = require('./routes/animalRoutes');
 const authRoutes = require('./routes/authRoutes');
 const schemeRoutes = require('./routes/schemeRoutes');
+const marketRoutes = require('./routes/marketRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 app.use('/api/animals', animalRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/schemes', schemeRoutes);
+app.use('/api/market', marketRoutes);
 
 const PORT = process.env.PORT || 5000;
 
